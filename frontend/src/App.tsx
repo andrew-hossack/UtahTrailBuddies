@@ -1,14 +1,12 @@
 // src/App.tsx
-import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Amplify } from "aws-amplify";
 import { useAuth } from "./hooks/useAuth";
 import EventDetailPage from "./pages/EventsDetailPage";
 import EventsPage from "./pages/EventsPage";
 import { LoginPage } from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import { SignupPage } from "./pages/SignupPage";
-import { useState } from "react";
 import CreateEventPage from "./pages/CreateEventPage";
 import HomePage from "./pages/HomePage";
 import { Layout } from "./components/Layout";

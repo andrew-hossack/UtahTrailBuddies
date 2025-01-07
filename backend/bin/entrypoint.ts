@@ -5,9 +5,8 @@ import { HikingEventStack } from "../stacks/HikingEventStack";
 
 const app = new cdk.App();
 
-let envConfig: cdk.Environment | undefined = undefined;
-
 let env = process.env.ENVIRONMENT;
+let envConfig: cdk.Environment | undefined = undefined;
 
 switch (env?.toLowerCase()) {
   case "development":
@@ -24,4 +23,7 @@ console.log(
   `Using environment: ${env} with credentials: ${JSON.stringify(envConfig)}`
 );
 
-new HikingEventStack(app, "HikingEventStack");
+new HikingEventStack(app, "HikingEventStack", {
+  budgetEmailSubscribers: ["andrew_hossack@outlook.com"],
+  budgetMonthlyLimitUsd: 10,
+});

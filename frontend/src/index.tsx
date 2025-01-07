@@ -6,6 +6,19 @@ import { Amplify } from "aws-amplify";
 import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
 
+console.log(`
+ _   _  _           _      _____               _  _ ______             _      _  _            
+| | | || |         | |    |_   _|             (_)| || ___ \\           | |    | |(_)           
+| | | || |_   __ _ | |__    | |   _ __   __ _  _ | || |_/ / _   _   __| |  __| | _   ___  ___ 
+| | | || __| / _\` || '_ \\   | |  | '__| / _\` || || || ___ \\| | | | / _\` | / _\` || | / _ \\/ __|
+| |_| || |_ | (_| || | | |  | |  | |   | (_| || || || |_/ /| |_| || (_| || (_| || ||  __/\\__ \\
+ \\___/  \\__| \\__,_||_| |_|  \\_/  |_|    \\__,_||_||_|\\____/  \\__,_| \\__,_| \\__,_||_| \\___||___/
+`);
+
+console.log(
+  "Love to code? Contact us at info@utahtrailbuddies.com and say hello!"
+);
+
 // Configure Amplify
 Amplify.configure({
   Auth: {
@@ -37,3 +50,4 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     </QueryClientProvider>
   </React.StrictMode>
 );
+

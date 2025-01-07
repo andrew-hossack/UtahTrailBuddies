@@ -11,12 +11,18 @@ import * as events from "aws-cdk-lib/aws-events";
 import * as targets from "aws-cdk-lib/aws-events-targets";
 import * as lambdaEventSources from "aws-cdk-lib/aws-lambda-event-sources";
 import { Construct } from "constructs";
+import { BudgetResources } from "../src/resources/budgetResources";
+
+export interface HikingEventStackProps extends cdk.StackProps {
+  budgetMonthlyLimitUsd: number;
+  budgetEmailSubscribers: string[];
+}
 
 /**
  * Core infrastructure stack.
  */
 export class HikingEventStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props: HikingEventStackProps) {
     super(scope, id, props);
 
     // S3 bucket for storing event images
@@ -58,7 +64,7 @@ export class HikingEventStack extends cdk.Stack {
     // CloudFront distribution for the website
     const distribution = new cloudfront.Distribution(this, "Distribution", {
       defaultBehavior: {
-        origin: new origins.S3Origin(websiteBucket),
+        origin: new origins.S3StaticWebsiteOrigin(websiteBucket),
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       },
       defaultRootObject: "index.html",
@@ -279,6 +285,12 @@ export class HikingEventStack extends cdk.Stack {
 
     notificationFunction.addEventSource(eventStreamSource);
     notificationFunction.addEventSource(participantStreamSource);
+
+    new BudgetResources(this, "BudgetResources", {
+      budgetMonthlyLimitUsd: props.budgetMonthlyLimitUsd,
+      emailSubscribers: props.budgetEmailSubscribers,
+      budgetName: "Monthly Spend v2",
+    });
 
     // Output important values
     new cdk.CfnOutput(this, "UserPoolId", { value: userPool.userPoolId });
