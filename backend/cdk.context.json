@@ -1,0 +1,76 @@
+{
+  "availability-zones:account=381491857943:region=us-east-1": [
+    "us-east-1a",
+    "us-east-1b",
+    "us-east-1c",
+    "us-east-1d",
+    "us-east-1e",
+    "us-east-1f"
+  ],
+  "vpc-provider:account=381491857943:filter.vpc-id=vpc-0c98bdb1c1b9f66d0:region=us-east-1:returnAsymmetricSubnets=true": {
+    "vpcId": "vpc-0c98bdb1c1b9f66d0",
+    "vpcCidrBlock": "10.200.0.0/16",
+    "ownerAccountId": "381491857943",
+    "availabilityZones": [],
+    "subnetGroups": [
+      {
+        "name": "App-Subnet-B",
+        "type": "Isolated",
+        "subnets": [
+          {
+            "subnetId": "subnet-035362ae146531d10",
+            "cidr": "10.200.24.0/21",
+            "availabilityZone": "us-east-1a",
+            "routeTableId": "rtb-0e20330bea1f1d30d"
+          },
+          {
+            "subnetId": "subnet-063f42b9386ff589e",
+            "cidr": "10.200.32.0/21",
+            "availabilityZone": "us-east-1b",
+            "routeTableId": "rtb-058ab13aa55f9ff20"
+          }
+        ]
+      },
+      {
+        "name": "DMZ-Subnet-A",
+        "type": "Public",
+        "subnets": [
+          {
+            "subnetId": "subnet-0380967435e753729",
+            "cidr": "10.200.0.0/24",
+            "availabilityZone": "us-east-1a",
+            "routeTableId": "rtb-0a68367a43c9514e7"
+          },
+          {
+            "subnetId": "subnet-0d0e29b34fa1a4403",
+            "cidr": "10.200.1.0/24",
+            "availabilityZone": "us-east-1b",
+            "routeTableId": "rtb-00cd2f71005015901"
+          }
+        ]
+      },
+      {
+        "name": "App-Subnet-A",
+        "type": "Private",
+        "subnets": [
+          {
+            "subnetId": "subnet-0bd1066f1f87bf231",
+            "cidr": "10.200.8.0/21",
+            "availabilityZone": "us-east-1a",
+            "routeTableId": "rtb-0c481b4f477d311a5"
+          },
+          {
+            "subnetId": "subnet-09fcbce7798becc45",
+            "cidr": "10.200.16.0/21",
+            "availabilityZone": "us-east-1b",
+            "routeTableId": "rtb-09be156ac9774ad12"
+          }
+        ]
+      }
+    ]
+  },
+  "hosted-zone:account=381491857943:domainName=flyparatag.com:region=us-east-1": {
+    "Id": "/hostedzone/Z099994237T6GD9JXUEXL",
+    "Name": "flyparatag.com."
+  }
+}
