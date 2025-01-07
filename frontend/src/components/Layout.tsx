@@ -45,7 +45,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                       alt=""
                     />
                     <span className="ml-2 text-gray-700">
-                      {auth.user?.profile.family_name}
+                      {auth.user?.profile.given_name}
                     </span>
                   </button>
                 </div>

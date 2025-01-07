@@ -15,7 +15,7 @@ const HomePage = () => {
     queryKey: ["upcomingEvents"],
     queryFn: async () => {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/events?limit=4&sort=date`
+        `${import.meta.env.VITE_API_URL}/v1/events?limit=4&sort=date`
       );
       if (!response.ok) throw new Error("Failed to fetch upcoming events");
       return response.json();
@@ -27,9 +27,7 @@ const HomePage = () => {
     queryKey: ["userEvents", user?.profile.sub],
     queryFn: async () => {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/events/participating/${
-          user?.profile.sub
-        }`
+        `${import.meta.env.VITE_API_URL}/v1/events/${user?.profile.sub}`
       );
       if (!response.ok) throw new Error("Failed to fetch user events");
       return response.json();
@@ -47,7 +45,7 @@ const HomePage = () => {
       {/* Welcome Section */}
       <div className="mb-12">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Welcome back, {user?.profile.family_name?.split(" ")[0]}!
+          Welcome back, {user?.profile.given_name}!
         </h1>
         <p className="text-xl text-gray-600">
           Find your next outdoor adventure in Utah.

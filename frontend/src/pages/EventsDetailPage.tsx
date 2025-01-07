@@ -26,7 +26,7 @@ const EventDetailPage = () => {
     queryKey: ["event", eventId],
     queryFn: async () => {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/events/${eventId}`
+        `${import.meta.env.VITE_API_URL}/v1/events/${eventId}`
       );
       if (!response.ok) throw new Error("Failed to fetch event");
       return response.json();
@@ -38,7 +38,7 @@ const EventDetailPage = () => {
     queryKey: ["eventParticipants", eventId],
     queryFn: async () => {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/events/${eventId}/participants`
+        `${import.meta.env.VITE_API_URL}/v1/events/${eventId}/participants`
       );
       if (!response.ok) throw new Error("Failed to fetch participants");
       return response.json();
@@ -50,7 +50,7 @@ const EventDetailPage = () => {
   const joinMutation = useMutation({
     mutationFn: async () => {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/events/${eventId}/join`,
+        `${import.meta.env.VITE_API_URL}/v1/events/${eventId}/join`,
         {
           method: "POST",
           headers: {
@@ -73,7 +73,7 @@ const EventDetailPage = () => {
   const leaveMutation = useMutation({
     mutationFn: async () => {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/events/${eventId}/leave`,
+        `${import.meta.env.VITE_API_URL}/v1/events/${eventId}/leave`,
         {
           method: "POST",
           headers: {
@@ -96,7 +96,7 @@ const EventDetailPage = () => {
   const cancelMutation = useMutation({
     mutationFn: async () => {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/events/${eventId}`,
+        `${import.meta.env.VITE_API_URL}/v1/events/${eventId}`,
         {
           method: "DELETE",
           headers: {

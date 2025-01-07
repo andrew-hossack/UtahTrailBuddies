@@ -51,5 +51,5 @@ new UserPoolStack(app, "UserPoolStack", {
 new APIStack(app, "APIStack", {
   env: envConfig,
   terminationProtection: true,
-  description: "Databases and API-related lambda functions.",
+  description: "Databases, buckets and core API-related resources.",
 });

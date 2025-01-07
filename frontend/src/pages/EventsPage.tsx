@@ -35,7 +35,7 @@ const EventsPage = () => {
         params.append("difficulties", filters.difficulties.join(","));
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/events?${params}`
+        `${import.meta.env.VITE_API_URL}/v1/events?${params}`
       );
       if (!response.ok) throw new Error("Failed to fetch events");
       return response.json();

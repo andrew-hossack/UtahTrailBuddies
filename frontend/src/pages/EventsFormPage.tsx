@@ -55,7 +55,7 @@ const EventFormPage = () => {
     queryKey: ["event", eventId],
     queryFn: async () => {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/events/${eventId}`
+        `${import.meta.env.VITE_API_URL}/v1/events/${eventId}`
       );
       if (!response.ok) throw new Error("Failed to fetch event");
       return response.json();
@@ -121,8 +121,8 @@ const EventFormPage = () => {
 
       const response = await fetch(
         isEditMode
-          ? `${import.meta.env.VITE_API_URL}/events/${eventId}`
-          : `${import.meta.env.VITE_API_URL}/events`,
+          ? `${import.meta.env.VITE_API_URL}/v1/events/${eventId}`
+          : `${import.meta.env.VITE_API_URL}/v1/events`,
         {
           method: isEditMode ? "PUT" : "POST",
           headers: {

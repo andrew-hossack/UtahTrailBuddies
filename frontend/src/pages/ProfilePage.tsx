@@ -16,7 +16,7 @@ const ProfilePage = () => {
   const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState<UserProfile>({
-    name: user?.profile.family_name || "",
+    name: `${user?.profile.given_name} ${user?.profile.family_name}` || "",
     profilePhotoUrl: user?.profile.picture,
   });
 
@@ -25,7 +25,9 @@ const ProfilePage = () => {
     queryKey: ["organizedEvents", user?.profile.sub],
     queryFn: async () => {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/events/organized/${user?.profile.sub}`
+        `${import.meta.env.VITE_API_URL}/v1/events/organized/${
+          user?.profile.sub
+        }`
       );
       if (!response.ok) throw new Error("Failed to fetch organized events");
       return response.json();
@@ -38,9 +40,7 @@ const ProfilePage = () => {
       queryKey: ["participatingEvents", user?.profile.sub],
       queryFn: async () => {
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/events/participating/${
-            user?.profile.sub
-          }`
+          `${import.meta.env.VITE_API_URL}/v1/events/${user?.profile.sub}`
         );
         if (!response.ok)
           throw new Error("Failed to fetch participating events");

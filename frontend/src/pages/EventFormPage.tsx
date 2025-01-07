@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Calendar, Clock, MapPin, Upload, X, Loader2 } from "lucide-react";
 import { CategoryName, Difficulty } from "../types";
+import { apiClient } from "../lib/apiClient";
 
 const CATEGORIES: CategoryName[] = [
   "Day Hike",
@@ -53,13 +54,7 @@ const EventFormPage = () => {
   // Fetch existing event data if in edit mode
   const { data: existingEvent } = useQuery({
     queryKey: ["event", eventId],
-    queryFn: async () => {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/events/${eventId}`
-      );
-      if (!response.ok) throw new Error("Failed to fetch event");
-      return response.json();
-    },
+    queryFn: () => apiClient.get(`/v1/events/${eventId}`),
     enabled: isEditMode,
   });
 
@@ -121,8 +116,8 @@ const EventFormPage = () => {
 
       const response = await fetch(
         isEditMode
-          ? `${import.meta.env.VITE_API_URL}/events/${eventId}`
-          : `${import.meta.env.VITE_API_URL}/events`,
+          ? `${import.meta.env.VITE_API_URL}/v1/events/${eventId}`
+          : `${import.meta.env.VITE_API_URL}/v1/events`,
         {
           method: isEditMode ? "PUT" : "POST",
           headers: {
