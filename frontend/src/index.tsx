@@ -2,9 +2,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Amplify } from "aws-amplify";
 import App from "./App";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "react-oidc-context";
 
 console.log(`
  _   _  _           _      _____               _  _ ______             _      _  _            
@@ -19,32 +18,21 @@ console.log(
   "Love to code? Contact us at info@utahtrailbuddies.com and say hello!"
 );
 
-// Configure Amplify
-Amplify.configure({
-  Auth: {
-    Cognito: {
-      userPoolId: import.meta.env.VITE_COGNITO_USER_POOL_ID,
-      userPoolClientId: import.meta.env.VITE_COGNITO_CLIENT_ID,
-      loginWith: {
-        oauth: {
-          domain: import.meta.env.VITE_COGNITO_DOMAIN,
-          scopes: ["openid", "email", "profile"],
-          redirectSignIn: [import.meta.env.VITE_REDIRECT_SIGN_IN],
-          redirectSignOut: [import.meta.env.VITE_REDIRECT_SIGN_OUT],
-          responseType: "code",
-        },
-      },
-    },
-  },
-});
-
 // Create a client
 const queryClient = new QueryClient();
+
+const cognitoAuthConfig = {
+  authority: "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_gEFXKkZHz",
+  client_id: "2fk1h395cmmu9jgvauvgueansc",
+  redirect_uri: "http://localhost:3000/callback",
+  response_type: "code",
+  scope: "email openid profile",
+};
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
+      <AuthProvider {...cognitoAuthConfig}>
         <App />
       </AuthProvider>
     </QueryClientProvider>

@@ -72,5 +72,9 @@
   "hosted-zone:account=381491857943:domainName=flyparatag.com:region=us-east-1": {
     "Id": "/hostedzone/Z099994237T6GD9JXUEXL",
     "Name": "flyparatag.com."
+  },
+  "hosted-zone:account=796973484868:domainName=utahadventureclub.com:region=us-east-1": {
+    "Id": "/hostedzone/Z086797933C3MFI9P1BGF",
+    "Name": "utahadventureclub.com."
   }
 }

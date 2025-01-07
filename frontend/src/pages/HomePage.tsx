@@ -3,9 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { format, isFuture } from "date-fns";
 import { Calendar, MapPin, ArrowRight, Plus } from "lucide-react";
-import { useAuth } from "../hooks/useAuth";
 import { Event } from "../types";
 import OptimizedImage from "../components/OptimizedImage";
+import { useAuth } from "react-oidc-context";
 
 const HomePage = () => {
   const { user } = useAuth();
@@ -24,15 +24,17 @@ const HomePage = () => {
 
   // Fetch user's upcoming events
   const { data: userEvents, isLoading: loadingUserEvents } = useQuery({
-    queryKey: ["userEvents", user?.id],
+    queryKey: ["userEvents", user?.profile.sub],
     queryFn: async () => {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/events/participating/${user?.id}`
+        `${import.meta.env.VITE_API_URL}/events/participating/${
+          user?.profile.sub
+        }`
       );
       if (!response.ok) throw new Error("Failed to fetch user events");
       return response.json();
     },
-    enabled: !!user?.id,
+    enabled: !!user?.profile.sub,
   });
 
   // Filter to show only future events
@@ -45,7 +47,7 @@ const HomePage = () => {
       {/* Welcome Section */}
       <div className="mb-12">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Welcome back, {user?.name?.split(" ")[0]}!
+          Welcome back, {user?.profile.family_name?.split(" ")[0]}!
         </h1>
         <p className="text-xl text-gray-600">
           Find your next outdoor adventure in Utah.

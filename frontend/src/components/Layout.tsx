@@ -1,10 +1,15 @@
 import { useState } from "react";
+import { useAuth } from "react-oidc-context";
 import { Link } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
 
 // src/components/Layout.tsx
 export const Layout = ({ children }: { children: React.ReactNode }) => {
-  const { user, signOut } = useAuth();
+  const auth = useAuth();
+
+  const signOutRedirect = async () => {
+    await auth.removeUser(); // Clear the local session
+  };
+
   const [showDropdown, setShowDropdown] = useState(false);
 
   return (
@@ -36,10 +41,12 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                   >
                     <img
                       className="h-8 w-8 rounded-full"
-                      src={user?.profilePhotoUrl || "/default-avatar.png"}
+                      src={auth.user?.profile.picture || "/default-avatar.png"}
                       alt=""
                     />
-                    <span className="ml-2 text-gray-700">{user?.name}</span>
+                    <span className="ml-2 text-gray-700">
+                      {auth.user?.profile.family_name}
+                    </span>
                   </button>
                 </div>
 
@@ -52,7 +59,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                       Profile
                     </Link>
                     <button
-                      onClick={signOut}
+                      onClick={signOutRedirect}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Sign out

@@ -9,10 +9,10 @@ import {
   Users,
   Edit,
   Trash,
-  AlertTriangle
+  AlertTriangle,
 } from "lucide-react";
-import { useAuth } from "../hooks/useAuth";
 import CustomAlertDialog from "../components/CustomAlertDialog";
+import { useAuth } from "react-oidc-context";
 
 const EventDetailPage = () => {
   const { eventId } = useParams();
@@ -43,7 +43,7 @@ const EventDetailPage = () => {
       if (!response.ok) throw new Error("Failed to fetch participants");
       return response.json();
     },
-    enabled: !!event?.participants?.includes(user?.id),
+    enabled: !!event?.participants?.includes(user?.profile.sub),
   });
 
   // Join event mutation
@@ -128,10 +128,10 @@ const EventDetailPage = () => {
     );
   }
 
-  const isOrganizer = event.organizerId === user?.id;
-  const isAdmin = user?.isAdminApproved;
+  const isOrganizer = event.organizerId === user?.profile.sub;
+  const isAdmin = false;
   const canManageEvent = isOrganizer || isAdmin;
-  const hasJoined = event.participants?.includes(user?.id);
+  const hasJoined = event.participants?.includes(user?.profile.sub);
   const isPastEvent = new Date(event.eventDate) < new Date();
   const isFull =
     event.maxParticipants &&

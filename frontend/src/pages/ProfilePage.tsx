@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { User, Camera, Calendar, MapPin, Loader2, Check } from "lucide-react";
-import { useAuth } from "../hooks/useAuth";
 import { Event } from "../types";
+import { useAuth } from "react-oidc-context";
 
 interface UserProfile {
   name: string;
@@ -16,16 +16,16 @@ const ProfilePage = () => {
   const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState<UserProfile>({
-    name: user?.name || "",
-    profilePhotoUrl: user?.profilePhotoUrl,
+    name: user?.profile.family_name || "",
+    profilePhotoUrl: user?.profile.picture,
   });
 
   // Fetch user's organized events
   const { data: organizedEvents, isLoading: loadingOrganized } = useQuery({
-    queryKey: ["organizedEvents", user?.id],
+    queryKey: ["organizedEvents", user?.profile.sub],
     queryFn: async () => {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/events/organized/${user?.id}`
+        `${import.meta.env.VITE_API_URL}/events/organized/${user?.profile.sub}`
       );
       if (!response.ok) throw new Error("Failed to fetch organized events");
       return response.json();
@@ -35,10 +35,12 @@ const ProfilePage = () => {
   // Fetch user's participating events
   const { data: participatingEvents, isLoading: loadingParticipating } =
     useQuery({
-      queryKey: ["participatingEvents", user?.id],
+      queryKey: ["participatingEvents", user?.profile.sub],
       queryFn: async () => {
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/events/participating/${user?.id}`
+          `${import.meta.env.VITE_API_URL}/events/participating/${
+            user?.profile.sub
+          }`
         );
         if (!response.ok)
           throw new Error("Failed to fetch participating events");
@@ -50,7 +52,7 @@ const ProfilePage = () => {
   const updateProfileMutation = useMutation({
     mutationFn: async (formData: UserProfile) => {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/users/${user?.id}`,
+        `${import.meta.env.VITE_API_URL}/v1/users/${user?.profile.sub}`,
         {
           method: "PUT",
           headers: {
@@ -85,7 +87,7 @@ const ProfilePage = () => {
       // Get pre-signed URL
       const urlResponse = await fetch(
         `${import.meta.env.VITE_API_URL}/upload-url?fileName=profile/${
-          user?.id
+          user?.profile.sub
         }`
       );
       const { url, key } = await urlResponse.json();
@@ -201,8 +203,8 @@ const ProfilePage = () => {
               ) : (
                 <h2 className="text-xl font-bold">{profileData.name}</h2>
               )}
-              <p className="text-gray-600 mt-1">{user?.email}</p>
-              {user?.isAdminApproved && (
+              <p className="text-gray-600 mt-1">{user?.profile.email}</p>
+              {false && (
                 <span className="mt-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                   <Check size={12} className="mr-1" />
                   Admin Approved

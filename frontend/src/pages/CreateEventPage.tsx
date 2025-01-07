@@ -1,15 +1,13 @@
 // src/pages/CreateEventPage.tsx
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
 import EventFormPage from "./EventFormPage";
 import { AlertDescription, CustomAlert } from "../components/CustomAlert";
+import { useAuth } from "react-oidc-context";
 
 const CreateEventPage = () => {
-  const navigate = useNavigate();
   const { user } = useAuth();
 
   // Check if user is approved to create events
-  if (!user?.isEmailVerified) {
+  if (!user?.profile.email_verified) {
     return (
       <div className="max-w-4xl mx-auto p-6">
         <CustomAlert variant="destructive">
